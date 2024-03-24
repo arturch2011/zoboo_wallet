@@ -39,62 +39,25 @@ class EthereumUtils extends StateNotifier<bool> {
   DeployedContract? _contract;
   DeployedContract? _contractToken;
   EthereumAddress? address;
+  int xchainId = 534351;
 
-  // ContractFunction? _userName;
-  // ContractFunction? _setName;
+  ContractFunction? _createTransaction;
+  ContractFunction? _executeParcel;
+  ContractFunction? _executeAutomation;
+  ContractFunction? _getMyTransactions;
+  ContractFunction? _getTransactions;
+  ContractFunction? _stakeEth;
+  ContractFunction? _myStakedEth;
+  ContractFunction? _withdrawStakedEth;
 
-  ContractFunction? _createGoal;
-  ContractFunction? _startGoal;
-  ContractFunction? _enterGoal;
-  ContractFunction? _updateFrequency;
-  ContractFunction? _autenticateFrequency;
-  ContractFunction? _completeGoal;
-  ContractFunction? _getGoal;
-  ContractFunction? _getMyProgress;
-  ContractFunction? _getMyBets;
-  ContractFunction? _participants;
-  ContractFunction? _bets;
-  ContractFunction? _myGoals;
-  ContractFunction? _myEnteredGoals;
 
-  ContractFunction? _approve;
-  ContractFunction? _burn;
-  ContractFunction? _burnFrom;
-  ContractFunction? _mint;
-  ContractFunction? _pause;
-  ContractFunction? _permit;
-  ContractFunction? _renounceOwnership;
-  ContractFunction? _transfer;
-  ContractFunction? _transferFrom;
-  ContractFunction? _transferOwnership;
-  ContractFunction? _unpause;
-  ContractFunction? _allowance;
-  ContractFunction? _balanceOf;
-  ContractFunction? _decimals;
-  ContractFunction? _DOMAIN_SEPARATOR;
-  ContractFunction? _eip712Domain;
-  ContractFunction? _name;
-  ContractFunction? _nonces;
-  ContractFunction? _owner;
-  ContractFunction? _paused;
-  ContractFunction? _symbol;
-  ContractFunction? _totalSupply;
-
-  List<dynamic> goals = [];
-  List<dynamic> myEnteredGoals = [];
-  List<dynamic> myCreatedGoals = [];
   String publicAddr = '';
 
   final String addr = dotenv.env['CONTRACT_ADDRESS']!;
   // final String addrToken = dotenv.env['CONTRACT_ADDRESS_TOKEN']!;
 
   final String _rpcUrl =
-      'https://sepolia.infura.io/v3/1bac17a54bf944d591a6be48d3c7514c';
-  // final String _wsUrl = Platform.isAndroid
-  //     ? 'https://polygon-amoy.infura.io/v3/1bac17a54bf944d591a6be48d3c7514c'
-  //     : 'https://polygon-amoy.infura.io/v3/1bac17a54bf944d591a6be48d3c7514c';
-  // final String _privateKey =
-  //     "bb0d0d19d4a7accc48219471f8b8588e7672eb7b1f715d63d46c523a3c93e91a";
+      'https://sepolia-rpc.scroll.io/';
 
   initialSetup() async {
     http.Client httpClient = http.Client();
@@ -111,13 +74,8 @@ class EthereumUtils extends StateNotifier<bool> {
     var jsonAbi = jsonDecode(abiStringFile);
     _abi = jsonEncode(jsonAbi['abi']);
 
-    // String abiStringFileToken =
-    //     await rootBundle.loadString("build/contracts/GoalsToken.json");
-    // var jsonAbiToken = jsonDecode(abiStringFileToken);
-    // _abiToken = jsonEncode(jsonAbiToken['abi']);
 
     _contractAddress = EthereumAddress.fromHex(addr);
-    // _contractAddressToken = EthereumAddress.fromHex(addrToken);
   }
 
   Future<void> getCredential() async {
@@ -130,90 +88,148 @@ class EthereumUtils extends StateNotifier<bool> {
     _contract = DeployedContract(
         ContractAbi.fromJson(_abi!, "transacaoParcelada"), _contractAddress!);
 
-    // _contractToken = DeployedContract(
-    //     ContractAbi.fromJson(_abiToken!, "GoalsToken"), _contractAddressToken!);
-
-    // _userName = _contract!.function("userName");
-    // _setName = _contract!.function("setName");
-
-    // _approve = _contractToken!.function("approve");
-    // _burn = _contractToken!.function("burn");
-    // _burnFrom = _contractToken!.function("burnFrom");
-    // _mint = _contractToken!.function("mint");
-    // _pause = _contractToken!.function("pause");
-    // _permit = _contractToken!.function("permit");
-    // _renounceOwnership = _contractToken!.function("renounceOwnership");
-    // _transfer = _contractToken!.function("transfer");
-    // _transferFrom = _contractToken!.function("transferFrom");
-    // _transferOwnership = _contractToken!.function("transferOwnership");
-    // _unpause = _contractToken!.function("unpause");
-    // _allowance = _contractToken!.function("allowance");
-    // _balanceOf = _contractToken!.function("balanceOf");
-    // _decimals = _contractToken!.function("decimals");
-    // _DOMAIN_SEPARATOR = _contractToken!.function("DOMAIN_SEPARATOR");
-    // _eip712Domain = _contractToken!.function("eip712Domain");
-    // _name = _contractToken!.function("name");
-    // _nonces = _contractToken!.function("nonces");
-    // _owner = _contractToken!.function("owner");
-    // _paused = _contractToken!.function("paused");
-    // _symbol = _contractToken!.function("symbol");
-    // _totalSupply = _contractToken!.function("totalSupply");
+    _createTransaction = _contract!.function("createTransaction", _contractAddress!);
+    _executeParcel = _contract!.function("executeParcel", _contractAddress!);
+    _executeAutomation = _contract!.function("executeAutomation", _contractAddress!);
+    _getMyTransactions = _contract!.function("getMyTransactions", _contractAddress!);
+    _getTransactions = _contract!.function("getTransactions", _contractAddress!);
+    _stakeEth = _contract!.function("stakeEth", _contractAddress!);
+    _myStakedEth = _contract!.function("myStakedEth", _contractAddress!);
+    _withdrawStakedEth = _contract!.function("_withdrawStakedEth", _contractAddress!);
   }
 
-  approve(EthereumAddress spender, BigInt amount) async {
-    isLoading = true;
-    state = isLoading;
-    print(_credentials!.address);
+  createTransaction(BigInt parcelas, BigInt quantidade) async {
+    state = true;
     try {
-      var gasPrice = await _ethClient!.getGasPrice();
       String tran = await _ethClient!.sendTransaction(
         _credentials!,
         Transaction.callContract(
-          contract: _contractToken!,
-          function: _approve!,
-          parameters: [spender, amount],
+          contract: _contract!,
+          function: _createTransaction!,
+          parameters: [parcelas, quantidade],
           from: _credentials!.address,
         ),
-        chainId: 11155111,
+        chainId: xchainId
       );
-
-      print(tran);
-      TransactionReceipt? receipt;
-      while (true) {
-        receipt = await _ethClient!.getTransactionReceipt(tran);
-        print(receipt);
-        if (receipt != null) {
-          break;
-        }
-        await Future.delayed(const Duration(seconds: 1));
-      }
-      print(tran);
-    } catch (e) {
-      print(e);
+    } catch(e){
+      print(e.toString);
     }
+    state = false;
   }
 
-  // balanceOf(EthereumAddress addr) async {
-  //   var balance = await _ethClient!.call(
-  //       contract: _contractToken!,
-  //       function: _balanceOf!,
-  //       params: [addr],
-  //       sender: _credentials!.address);
-  //   print(balance);
-  //   return balance;
-  // }
+  executeParcel(BigInt id) async {
+    state = true;
+    try {
+      String tran = await _ethClient!.sendTransaction(
+        _credentials!,
+        Transaction.callContract(
+          contract: _contract!,
+          function: _executeParcel!,
+          parameters: [id],
+          from: _credentials!.address,
+        ),
+        chainId: xchainId
+      );
+    } catch (e) {
+      print(e.toString);
+    }
+    state = false;
+  }
 
-  transfer(EthereumAddress to, BigInt amount) async {
-    String tran = await _ethClient!.sendTransaction(
-      _credentials!,
-      Transaction.callContract(
-        contract: _contractToken!,
-        function: _transfer!,
-        parameters: [to, amount],
-        from: _credentials!.address,
-      ),
-      chainId: 11155111,
-    );
-    print(tran);
+  executeAutomation() async {
+    state = true;
+    try {
+      String tran = await _ethClient!.sendTransaction(
+        _credentials!,
+        Transaction.callContract(
+          contract: _contract!,
+          function: _executeAutomation!,
+          parameters: [],
+          from: _credentials!.address,
+        ),
+        chainId: xchainId
+      );
+    } catch (e) {
+      print(e.toString);
+    }
+    state = false;
+  }
+
+  getMyTransactions() async {
+    state = true;
+    try {
+      var tran = await _ethClient!.call(
+        contract: _contract!,
+        function: _getMyTransactions!,
+        params: [],
+        sender: _credentials!.address
+      );
+      return tran;
+    } catch (e) {
+      print(e.toString);
+    }
+    state = false;
+  }
+
+
+  getTransactions() async {
+    state = true;
+    try {
+      var tran = await _ethClient!call(
+        contract: _contract!,
+        function: _getTransactions!,
+        params: [],
+        sender: _credentials!.address
+      );
+
+      return(tran);
+    } catch (e) {
+      print(e.toString);
+    }
+    state = false;
+  }
+
+  myStakedEth() async {
+    state = true;
+    try {
+      var tran = await _ethClient!call(
+        contract: _contract!,
+        function: _myStakedEth!,
+        params: [],
+        sender: _credentials!.address
+      );
+
+      return(tran);
+    } catch (e) {
+      print(e.toString);
+    }
+    state = false;
+  }
+
+  withdrawStakedEth(BigInt amount) async {
+    state = true;
+    try {
+      String tran = await _ethClient!.sendTransaction(
+        _credentials!,
+        Transaction.callContract(
+          contract: _contract!,
+          function: _withdrawStakedEth!,
+          parameters: [amount],
+          from: _credentials!.address,
+        ),
+        chainId: xchainId
+      );
+    } catch (e) {
+      print(e.toString);
+    }
+    state = false;
+  }
+
+
+
+  balanceOf(EthereumAddress addr) async {
+    var balance = await _ethClient!._balanceOf
+    print(balance);
+    return balance;
   }
 }
