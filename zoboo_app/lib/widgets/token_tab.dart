@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TokenListView extends StatefulWidget {
-  const TokenListView({super.key});
+  final int balance;
+  const TokenListView({super.key, required this.balance});
 
   @override
   State<TokenListView> createState() => _TokenListViewState();
@@ -10,29 +11,16 @@ class TokenListView extends StatefulWidget {
 class _TokenListViewState extends State<TokenListView> {
   final List tokens = [
     {
-      'name': 'Bitcoin',
-      'quantity': 1,
-      'symbol': 'BTC',
-      'value': 100000,
-      'image': '',
-    },
-    {
       'name': 'Ethereum',
       'quantity': 2,
       'symbol': 'ETH',
       'value': 2000,
       'image': '',
     },
-    {
-      'name': 'Binance Coin',
-      'quantity': 3,
-      'symbol': 'BNB',
-      'value': 300,
-      'image': '',
-    },
   ];
   @override
   Widget build(BuildContext context) {
+    int balance = widget.balance;
     return Expanded(
       child: ListView.builder(
         itemCount: tokens.length,
@@ -54,11 +42,11 @@ class _TokenListViewState extends State<TokenListView> {
                     )),
                 subtitle: Row(
                   children: <Widget>[
-                    Text('${tokens[index]['quantity'].toString()}'),
+                    Text(balance.toString()),
                     SizedBox(width: 10),
                     Text('${tokens[index]['symbol']}'),
                     Spacer(),
-                    Text('\$${tokens[index]['value'].toString()}',
+                    Text('\$ ${(balance * 3570).toStringAsFixed(2)}',
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
