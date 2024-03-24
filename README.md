@@ -39,7 +39,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 Descrição geral do projeto
 
 
-
 Ideia do Projeto:
 
 O conceito por trás do projeto da ZobooWallet é inovador e promissor. Propomos a criação de um aplicativo e um site integrados que utilizam uma sofisticada Account Abstraction, permitindo não apenas transações diretas, mas também pagamentos parcelados, agregando praticidade e flexibilidade aos usuários.
@@ -83,4 +82,5 @@ By adopting this solution, buyers can enjoy several significant advantages. Firs
 Contract addresses: 
 Scroll: 0xb629b5679Afd010F4778eac7B69194d0887B2c90
 Aurora: 0x936b1Ac167c89731B20584D4722f1B3dbEc37651
-https://youtu.be/Sq43AJeh7A8
+Link para apresentação do youtube: https://youtu.be/Sq43AJeh7A8
+Link para teste do app online: https://appetize.io/app/ycc5turbksgderd3s2wnxu4yqq
