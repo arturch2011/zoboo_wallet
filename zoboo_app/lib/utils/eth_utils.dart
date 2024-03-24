@@ -98,7 +98,7 @@ class EthereumUtils extends StateNotifier<bool> {
     _withdrawStakedEth = _contract!.function("_withdrawStakedEth", _contractAddress!);
   }
 
-  createTransaction(BigInt parcelas, BigInt quantidade) async {
+  createTransaction(BigInt parcelas, BigInt quantidade, BigInt slipage) async {
     state = true;
     try {
       String tran = await _ethClient!.sendTransaction(
@@ -106,8 +106,9 @@ class EthereumUtils extends StateNotifier<bool> {
         Transaction.callContract(
           contract: _contract!,
           function: _createTransaction!,
-          parameters: [parcelas, quantidade],
+          parameters: [parcelas, quantidade, slipage],
           from: _credentials!.address,
+          value: quantidade + slipage,
         ),
         chainId: xchainId
       );
@@ -231,5 +232,23 @@ class EthereumUtils extends StateNotifier<bool> {
     var balance = await _ethClient!._balanceOf
     print(balance);
     return balance;
+  }
+
+  sendEth(EthereumAddress to, BigInt amount) async {
+    state = true;
+    try {
+      await _ethClient!.sendTransaction(
+        _credentials!,
+        Transaction(
+          to: to,
+          value: EtherAmount.fromUnitAndValue(EtherUnit.ether, amount),
+          maxGas: 2000000 
+        ),
+        chainId: xchainId,
+      );
+    } catch (e) {
+      print(e.toString);
+    }
+    state = false;
   }
 }
