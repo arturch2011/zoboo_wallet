@@ -28,6 +28,9 @@ contract transacaoParcelada {
         address sender;
         bool finalized;
         uint256 valorEnviado;
+        uint256 slipage;
+        uint256 valMaisSlipage;
+        int256 valorPago;
     }
 
     transaction[] public transactions;
@@ -37,7 +40,8 @@ contract transacaoParcelada {
 
     function createTransaction(
         int256 _parcelas,
-        uint quantidade
+        uint quantidade,
+        uint256 _slipage
     ) public payable {
         require(
             msg.value == quantidade,
@@ -47,6 +51,7 @@ contract transacaoParcelada {
         (, int256 _valor_ativo, , , ) = dataFeed.latestRoundData();
         int256 _valorTotal = _valor_ativo * int256(msg.value);
         int256 _valorParcela = _valorTotal / _parcelas;
+        uint valSlipage = (msg.value + _slipage) * (1 + rate);
 
         userTransactions[msg.sender].push(transactions.length);
         transactions.push(
@@ -58,7 +63,10 @@ contract transacaoParcelada {
                 _valorTotal,
                 msg.sender,
                 false,
-                msg.value
+                msg.value,
+                _slipage,
+                valSlipage,
+                0
             )
         );
     }
@@ -74,14 +82,19 @@ contract transacaoParcelada {
             "Todas as parcelas ja foram pagas"
         );
         (, int256 _valor_ativo, , , ) = dataFeed.latestRoundData();
+        int256 valMaisSlipageAtual = int256(transactions[_id].valMaisSlipage) *
+            (_valor_ativo);
 
         int256 valor_atual = _valor_ativo *
             int256(transactions[_id].valorEnviado);
-        if (valor_atual < transactions[_id].valorTotal) {
+        if (valor_atual < valMaisSlipageAtual) {
             transactions[_id].finalized = true;
         } else {
+            transactions[_id].valorPago = ((int256(
+                transactions[_id].valorEnviado
+            ) - transactions[_id].valorPago) /
+                int256(transactions[_id].parcelas));
             transactions[_id].parcelas -= 1;
-            transactions[_id].valorTotal -= transactions[_id].valorParcela;
         }
     }
 
@@ -109,6 +122,10 @@ contract transacaoParcelada {
         return transactions;
     }
 
+    function getTransaction(uint _id) public view returns (transaction memory) {
+        return transactions[_id];
+    }
+
     function stakeEth() public payable {
         stakedEth[msg.sender] += msg.value;
         totalSponsors += 1;
@@ -130,5 +147,23 @@ contract transacaoParcelada {
 
         stakedEth[msg.sender] -= _amount;
         payable(msg.sender).transfer(_amount * (1 + rate));
+    }
+
+    function withDrawExcedent(uint _id) public {
+        require(
+            msg.sender == transactions[_id].sender,
+            "Somente o dono da transacao pode executar essa funcao"
+        );
+        require(
+            transactions[_id].finalized == true,
+            "Transacao ainda nao foi finalizada"
+        );
+        require(
+            transactions[_id].valorTotal > 0,
+            "Nao ha excedente a ser retirado"
+        );
+        uint256 excedent = uint256(transactions[_id].valorTotal);
+        transactions[_id].valorTotal = 0;
+        payable(msg.sender).transfer(excedent);
     }
 }
