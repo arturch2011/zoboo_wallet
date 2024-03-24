@@ -57,6 +57,7 @@ module.exports = {
    * $ truffle test --network <network-name>
    */
   plugins: ['truffle-plugin-verify'],
+  contracts_build_directory: './contractsBuild/contracts',
 
   api_keys: {
     etherscan: ETHERSCAN_API,
