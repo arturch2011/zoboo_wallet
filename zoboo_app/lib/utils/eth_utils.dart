@@ -78,11 +78,16 @@ class EthereumUtils extends StateNotifier<bool> {
   }
 
   Future<void> getCredential() async {
+    print("ZZZZZZZZZZZZZZZZZZZZ $privKey ");
     _credentials = EthPrivateKey.fromHex(privKey);
+    print("ZZZZZZZZZZZZZZZZZZZZ $_credentials ");
     publicAddr = _credentials!.address.toString();
+    print("ZZZZZZZZZZZZZZZZZZZZ $publicAddr ");
     address = _credentials!.address;
+    print("ZZZZZZZZZZZZZZZZZZZZ $address ");
     balance = await _ethClient!.getBalance(address!);
-    bal = balance!.getInEther;
+    print("ZZZZZZZZZZZZZZZZZZZZ $balance ");
+    bal = balance!.getInWei;
 
     print("ZZZZZZZZZZZZZZZZZZZZ $bal ");
   }
