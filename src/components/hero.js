@@ -18,7 +18,7 @@ const HeroSection = () => {
                 <p className="text-4xl md:text-6xl font-bold mb-8 text-center">A new payment method</p>
                 <div className="flex gap-10 my-40">
                     <motion.div className='/' whileHover={{ scale: 1.1 }}>
-                       <Link href="/" className="bg-black/20 hover:bg-white/20 text-ebase font-bold py-10 px-20 border border-solid border-black hover:border-white rounded-2xl">
+                       <Link href="https://appetize.io/app/ycc5turbksgderd3s2wnxu4yqq" className="bg-black/20 hover:bg-white/20 text-ebase font-bold py-10 px-20 border border-solid border-black hover:border-white rounded-2xl">
                             Launch App
                         </Link>  
                    </motion.div>
