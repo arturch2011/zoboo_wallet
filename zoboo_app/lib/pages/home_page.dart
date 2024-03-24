@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:zoboo_app/pages/menu_pagr.dart';
 import 'package:zoboo_app/providers/user_info_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'package:zoboo_app/utils/eth_utils.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:zoboo_app/widgets/profile_avatar.dart';
+import 'package:zoboo_app/widgets/receive_tab.dart';
 import 'package:zoboo_app/widgets/token_tab.dart';
 import 'package:zoboo_app/widgets/transfer_tab.dart';
 
@@ -52,28 +54,10 @@ class _HomePageState extends State<HomePage> {
         String address = ethUtils.publicAddr;
 
         List<dynamic> balance = [];
+        int bal = 0;
 
         Future<void> getInfos() async {
-          print('AAAAAAAAAA $myAddr');
-          // balance = await ethUtils.balanceOf(myAddr!);
-        }
-
-        final Widget tokensTab;
-        final Widget transferTab;
-        final Widget receiveTab;
-
-        if (1 == 1) {
-          tokensTab = Container(
-            child: Column(
-              children: [
-                Center(child: Text('No Tokens Found')),
-                TextButton(
-                  onPressed: () {},
-                  child: Text('Add Tokens'),
-                )
-              ],
-            ),
-          );
+          bal = ethUtils.bal.toInt();
         }
 
         return Scaffold(
@@ -88,13 +72,13 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     IconButton(
                       onPressed: () {
-                        // Navigator.of(context).push(
-                        //   MaterialPageRoute(
-                        //     builder: (context) {
-                        //       return const Menu();
-                        //     },
-                        //   ),
-                        // );
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const Menu();
+                            },
+                          ),
+                        );
                       },
                       icon: const Icon(
                         Icons.settings,
@@ -161,7 +145,7 @@ class _HomePageState extends State<HomePage> {
                                       } else {
                                         return SizedBox(
                                           child: Text(
-                                            "\$ ${balance}",
+                                            "\$ ${bal.toStringAsFixed(2)}",
                                             textAlign: TextAlign.center,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -340,10 +324,16 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(height: 20),
                 if (statusSelecionado == 'Ativos')
-                  TokenListView()
+                  TokenListView(
+                    balance: bal,
+                  )
                 else if (statusSelecionado == 'Concluidos')
-                  TransferTab(),
-                const SizedBox(height: 90),
+                  TransferTab()
+                else
+                  QrCodeWidget(
+                    qrData: myAddr.toString(),
+                    name: emailFinal,
+                  ),
               ],
             ),
           )),

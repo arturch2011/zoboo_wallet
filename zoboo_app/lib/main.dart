@@ -32,9 +32,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           fontFamily: 'Outfit',
           colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromRGBO(104, 80, 255, 1),
-              primary: const Color.fromRGBO(104, 80, 255, 1),
-              secondary: const Color.fromRGBO(61, 206, 252, 1)),
+              seedColor: Color.fromARGB(255, 253, 237, 15),
+              primary: Color.fromARGB(255, 248, 244, 17),
+              secondary: Color.fromARGB(255, 248, 215, 30)),
           scaffoldBackgroundColor: const Color.fromRGBO(250, 251, 253, 1),
           inputDecorationTheme: const InputDecorationTheme(
             hintStyle: TextStyle(
@@ -229,16 +229,16 @@ class _MysHomePageState extends State<MysHomePage> {
                           ),
                         ),
                         child: Icon(
-                          Icons.swap_horiz,
+                          Icons.credit_card,
                           size: 30,
                           color: Colors.white,
                         ),
                       ),
                       icon: Icon(
-                        Icons.swap_horiz,
+                        Icons.credit_card,
                         size: 30,
                       ),
-                      label: 'Projects',
+                      label: 'Credit',
                     ),
                     BottomNavigationBarItem(
                       activeIcon: Container(
@@ -285,7 +285,7 @@ class _MysHomePageState extends State<MysHomePage> {
                           ),
                         ),
                         child: Icon(
-                          Icons.person,
+                          Icons.history,
                           size: 30,
                           color: Colors.white,
                         ),

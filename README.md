@@ -79,3 +79,7 @@ The transacaoParcelada smart contract was developed to facilitate installment tr
 Benefit for Buyer and Creditor:
 
 By adopting this solution, buyers can enjoy several significant advantages. Firstly, by parceling their purchases, they have the opportunity to keep their funds available for a longer period in their accounts, providing greater financial flexibility and enhancing their purchasing power. Additionally, by guaranteeing transactions with collateral, the risk of default is significantly reduced, providing greater security for both the buyer and the credit provider. Credit providers also reap substantial benefits from this transaction modality. By providing financial support for installment transactions, they have the opportunity to generate returns through interest rates stipulated in the smart contract. This not only expands their investment opportunities but also diversifies their asset portfolio, adding value and solidity to their portfolio. In summary, both the buyer and the creditor benefit from the installment transactions with collateral system in a mathematically measurable way. The buyer saves on opportunity costs by parceling the payment, while the creditor receives interest rates on the invested capital and minimizes the risk of default through collateral.
+
+Contract addresses: 
+Scroll: 0xb629b5679Afd010F4778eac7B69194d0887B2c90
+Aurora: 0x936b1Ac167c89731B20584D4722f1B3dbEc37651

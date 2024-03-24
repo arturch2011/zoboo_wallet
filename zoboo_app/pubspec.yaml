@@ -43,6 +43,7 @@ dependencies:
   flutter_dotenv: ^5.0.2
   http: ^1.2.0
   clipboard: ^0.1.3
+  pretty_qr_code: ^3.3.0
 
 dev_dependencies:
   flutter_test:
@@ -70,7 +71,7 @@ flutter:
   assets:
         - assets/images/
         - assets/icons/
-        - build/contracts/transacaoParcelada.json
+        - contractsBuild/contracts/transacaoParcelada.json
         - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
