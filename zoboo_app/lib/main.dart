@@ -291,10 +291,10 @@ class _MysHomePageState extends State<MysHomePage> {
                         ),
                       ),
                       icon: Icon(
-                        Icons.person,
+                        Icons.history,
                         size: 30,
                       ),
-                      label: 'Profile',
+                      label: 'History',
                     ),
                   ],
                 ),
