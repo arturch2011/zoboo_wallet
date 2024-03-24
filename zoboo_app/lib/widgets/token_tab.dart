@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TokenListView extends StatefulWidget {
-  final int balance;
+  final double balance;
   const TokenListView({super.key, required this.balance});
 
   @override
@@ -20,7 +20,7 @@ class _TokenListViewState extends State<TokenListView> {
   ];
   @override
   Widget build(BuildContext context) {
-    int balance = widget.balance;
+    double balance = widget.balance;
     return Expanded(
       child: ListView.builder(
         itemCount: tokens.length,

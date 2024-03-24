@@ -54,10 +54,10 @@ class _HomePageState extends State<HomePage> {
         String address = ethUtils.publicAddr;
 
         List<dynamic> balance = [];
-        int bal = 0;
+        double bal = 0;
 
         Future<void> getInfos() async {
-          bal = ethUtils.bal.toInt();
+          bal = ethUtils.bal.toInt() / 1000000000000000000;
         }
 
         return Scaffold(
