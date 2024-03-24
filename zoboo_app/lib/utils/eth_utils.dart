@@ -69,8 +69,8 @@ class EthereumUtils extends StateNotifier<bool> {
   }
 
   Future<void> getAbi() async {
-    String abiStringFile =
-        await rootBundle.loadString("build/contracts/transacaoParcelada.json");
+    String abiStringFile = await rootBundle
+        .loadString("contractsBuild/contracts/transacaoParcelada.json");
     var jsonAbi = jsonDecode(abiStringFile);
     _abi = jsonEncode(jsonAbi['abi']);
 

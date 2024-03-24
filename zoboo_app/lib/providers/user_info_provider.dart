@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:goals_flutter/utils/eth_utils.dart';
+import 'package:zoboo_app/utils/eth_utils.dart';
 
 import 'package:web3auth_flutter/web3auth_flutter.dart';
 import 'package:web3auth_flutter/enums.dart' as provid;
@@ -105,7 +105,7 @@ class UserProvider extends ChangeNotifier {
         'userInfo': userInfo.toJson(),
       },
     );
-    // await getPrivKey(privKey);
+    await getPrivKey(privKey);
     isLogged = true;
     notifyListeners();
   }
@@ -124,7 +124,7 @@ class UserProvider extends ChangeNotifier {
         'userInfo': userInfo.toJson(),
       },
     );
-    // await getPrivKey(privKey);
+    await getPrivKey(privKey);
     isLogged = true;
     notifyListeners();
   }
@@ -143,7 +143,7 @@ class UserProvider extends ChangeNotifier {
         'userInfo': userInfo.toJson(),
       },
     );
-    // await getPrivKey(privKey);
+    await getPrivKey(privKey);
     isLogged = true;
     notifyListeners();
   }

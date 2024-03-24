@@ -71,7 +71,7 @@ flutter:
   assets:
         - assets/images/
         - assets/icons/
-        - build/contracts/transacaoParcelada.json
+        - contractsBuild/contracts/transacaoParcelada.json
         - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
