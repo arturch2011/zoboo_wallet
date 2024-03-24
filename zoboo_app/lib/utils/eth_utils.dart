@@ -101,16 +101,20 @@ class EthereumUtils extends StateNotifier<bool> {
     _withdrawStakedEth = _contract!.function("withdrawStakedEth");
   }
 
-  createTransaction(BigInt parcelas, BigInt quantidade) async {
+  createTransaction(BigInt parcelas, BigInt quantidade, BigInt slipage) async {
     state = true;
+    BigInt total = quantidade + slipage;
+    EtherAmount amountTotal = EtherAmount.inWei(total);
+
     try {
       String tran = await _ethClient!.sendTransaction(
           _credentials!,
           Transaction.callContract(
             contract: _contract!,
             function: _createTransaction!,
-            parameters: [parcelas, quantidade],
+            parameters: [parcelas, quantidade, slipage],
             from: _credentials!.address,
+            value: amountTotal,
           ),
           chainId: xchainId);
     } catch (e) {

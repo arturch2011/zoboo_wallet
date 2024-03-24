@@ -44,7 +44,7 @@ contract transacaoParcelada {
         uint256 _slipage
     ) public payable {
         require(
-            msg.value == quantidade,
+            msg.value == quantidade + _slipage,
             "Quantidade de ether enviada deve ser igual ao passado para a funcao"
         );
         require(_parcelas > 0, "Parcelas deve ser maior que 0");
@@ -69,6 +69,7 @@ contract transacaoParcelada {
                 0
             )
         );
+        payable(msg.sender).transfer(quantidade);
     }
 
     function executeParcel(uint _id) public {

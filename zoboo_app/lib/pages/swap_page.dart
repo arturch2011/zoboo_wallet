@@ -144,7 +144,9 @@ class _SwapPageState extends State<SwapPage> {
                           ElevatedButton(
                             onPressed: () async {
                               await ethUtils.createTransaction(
-                                  BigInt.from(parcels), BigInt.from(valor));
+                                  BigInt.from(parcels),
+                                  BigInt.from(valor),
+                                  BigInt.from(percent));
                             },
                             child: Text('Enviar'),
                           ),
