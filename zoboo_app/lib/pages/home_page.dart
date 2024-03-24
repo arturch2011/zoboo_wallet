@@ -6,6 +6,7 @@ import 'package:zoboo_app/utils/eth_utils.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:zoboo_app/widgets/profile_avatar.dart';
+import 'package:zoboo_app/widgets/receive_tab.dart';
 import 'package:zoboo_app/widgets/token_tab.dart';
 import 'package:zoboo_app/widgets/transfer_tab.dart';
 
@@ -342,8 +343,12 @@ class _HomePageState extends State<HomePage> {
                 if (statusSelecionado == 'Ativos')
                   TokenListView()
                 else if (statusSelecionado == 'Concluidos')
-                  TransferTab(),
-                const SizedBox(height: 90),
+                  TransferTab()
+                else
+                  QrCodeWidget(
+                    qrData: myAddr.toString(),
+                    name: emailFinal,
+                  ),
               ],
             ),
           )),

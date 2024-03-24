@@ -229,16 +229,16 @@ class _MysHomePageState extends State<MysHomePage> {
                           ),
                         ),
                         child: Icon(
-                          Icons.swap_horiz,
+                          Icons.credit_card,
                           size: 30,
                           color: Colors.white,
                         ),
                       ),
                       icon: Icon(
-                        Icons.swap_horiz,
+                        Icons.credit_card,
                         size: 30,
                       ),
-                      label: 'Projects',
+                      label: 'Credit',
                     ),
                     BottomNavigationBarItem(
                       activeIcon: Container(
@@ -285,7 +285,7 @@ class _MysHomePageState extends State<MysHomePage> {
                           ),
                         ),
                         child: Icon(
-                          Icons.person,
+                          Icons.history,
                           size: 30,
                           color: Colors.white,
                         ),

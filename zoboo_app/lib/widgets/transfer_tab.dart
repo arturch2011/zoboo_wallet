@@ -8,12 +8,13 @@ class TransferTab extends StatefulWidget {
 }
 
 class _TransferTabState extends State<TransferTab> {
-  final List<String> moedas = ['USD', 'EUR', 'BRL'];
+  final List<String> moedas = ['ETH', 'BTC', 'BNB'];
+  String moedaSelecionada = 'ETH';
   // Adicione mais moedas conforme necessário
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10.0),
+      padding: EdgeInsets.all(20.0),
       decoration: BoxDecoration(
         color: Colors.grey[200],
         borderRadius: const BorderRadius.all(
@@ -65,31 +66,70 @@ class _TransferTabState extends State<TransferTab> {
               ],
             ),
           ),
+          SizedBox(height: 20),
           Container(
             child: Row(
               children: <Widget>[
                 Expanded(
                   child: TextFormField(
                     decoration: InputDecoration(
-                      labelText: 'Valor',
+                      labelText: 'Amount', // Placeholder
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 6), // Espaçamento interno
+                      border: OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.circular(16.0), // Borda arredondada
+                        borderSide: const BorderSide(
+                            color: Colors.grey), // Cor da borda padrão
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.circular(16.0), // Borda arredondada
+                        borderSide: BorderSide(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .primary), // Cor da borda quando em foco
+                      ),
                     ),
                     keyboardType: TextInputType.number,
                   ),
                 ),
-                DropdownButton<String>(
-                  items: moedas.map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (_) {
-                    // Implemente a funcionalidade de mudança de moeda aqui
-                  },
+                const SizedBox(width: 20),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16.0),
+                    color: const Color.fromRGBO(217, 217, 217, 1),
+                  ),
+                  child: DropdownButton<String>(
+                    value: moedaSelecionada,
+                    onChanged: (value) {
+                      setState(() {
+                        moedaSelecionada = value!;
+                      });
+                    },
+                    items: moedas.map((String tipo) {
+                      return DropdownMenuItem<String>(
+                        value: tipo,
+                        child: Text(tipo),
+                      );
+                    }).toList(),
+                    borderRadius: BorderRadius.circular(16.0),
+                    dropdownColor: const Color.fromRGBO(217, 217, 217, 1),
+                    isDense: true,
+                    enableFeedback: true,
+                    menuMaxHeight: 200,
+                    underline: Container(),
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
+          SizedBox(height: 20),
           ElevatedButton(onPressed: () {}, child: Text('Enviar')),
         ],
       ),
